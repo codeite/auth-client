@@ -1,12 +1,11 @@
 {
   "name": "@codeite/auth-client",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An auth client for https://auth.codeite.net",
   "main": "index.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crypto": "^0.0.3",
     "moment": "^2.18.1"
   }
 }
