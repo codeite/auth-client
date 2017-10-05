@@ -56,6 +56,7 @@ module.exports = (name, secret, options = {}) => (req, res, next) => {
     .createHmac('sha256', secret)
     .update(token)
     .digest('base64')
+    .replace(/[+\/=]/g, c => ({'+':'-','//':'_','=':''}[c]))
 
   if (hash !== sig) {
     console.log(`invalid_signature ${hash} !== ${sig}`)
@@ -64,4 +65,15 @@ module.exports = (name, secret, options = {}) => (req, res, next) => {
 
   req.userId = userId
   return next()
+}
+
+module.exports.sign = (userId, secret) => {
+  const created = moment().format()
+  const token = `v1|${userId}|${created}`
+  const sig = crypto
+    .createHmac('sha256', secret)
+    .update(token)
+    .digest('base64')
+    .replace(/[+\/=]/g, c => ({'+':'-','//':'_','=':''}[c]))
+  return `${token}|${sig}`
 }
