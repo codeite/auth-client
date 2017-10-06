@@ -56,9 +56,11 @@ module.exports = (name, secret, options = {}) => (req, res, next) => {
     .createHmac('sha256', secret)
     .update(token)
     .digest('base64')
+
+  const hashSafe = hash
     .replace(/[+\/=]/g, c => ({'+':'-','//':'_','=':''}[c]))
 
-  if (hash !== sig) {
+  if (hash !== sig && hashSafe != sig) {
     console.log(`invalid_signature ${hash} !== ${sig}`)
     return reject(`invalid_signature ${sig}`)
   }
